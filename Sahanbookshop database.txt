@@ -1,0 +1,58 @@
+create database sahanbookshop;
+
+create table customer(
+cusId varchar(10) not null,
+cusName varchar(45) not null,
+cusAddress varchar(45) not null,
+cusContact varchar(45) not null,
+constraint primary key(`cusId`));
+
+create table staff(
+staffId varchar(10) not null,
+staffName varchar(45) not null,
+staffAddress varchar(45) not null,
+staffAge int not null,
+staffContact varchar(45) not null,
+constraint primary key(`staffId`));
+
+create table publisher(
+pubId varchar(45) not null,
+pubName varchar(45) not null,
+pubTitle varchar(45) not null,
+pubPayments decimal(10,2) not null,
+constraint primary key(`pubId`));
+
+
+create table book(
+bookId varchar(10) not null,
+pubId varchar(45) not null,
+bookTitle varchar(45) not null,
+bookAuthor varchar(45) not null,
+Qty int(10),
+Price decimal(10,2) not null,
+constraint primary key(`bookId`),
+constraint foreign key(`pubId`) references publisher(`pubId`) on update cascade on delete cascade
+);
+
+DROP TABLE IF EXISTS `order`;
+CREATE TABLE IF NOT EXISTS `order`(
+	orderId VARCHAR(15),
+	cusId VARCHAR(45),
+	orderDate DATE,
+	totalAmount decimal(10,2),
+	CONSTRAINT PRIMARY KEY (orderId),
+	CONSTRAINT FOREIGN KEY (cusId)REFERENCES customer(cusId)ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+DROP TABLE IF EXISTS `orderdetails`;
+CREATE TABLE IF NOT EXISTS `orderdetails`(
+	orderId VARCHAR(15),
+	bookId VARCHAR(45),
+	qty int (11),
+	unitPrice decimal(10,2),
+	totalPrice decimal(10,2),
+	CONSTRAINT FOREIGN KEY (bookId)REFERENCES book(bookId)ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT FOREIGN KEY (orderId)REFERENCES `order`(orderId)ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
